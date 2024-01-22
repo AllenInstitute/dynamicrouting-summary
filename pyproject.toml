@@ -18,3 +18,102 @@ license = {text = "MIT"}
 
 [tool.pdm]
 package-type = "application"
+
+
+[tool.black]
+# line-length = 100
+target-version = ["py39", "py310", "py311"]
+
+[tool.ruff]
+line-length = 100
+select = [
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "PGH",  # pygrep-hooks
+    "RUF",  # ruff
+    "W",    # pycodestyle
+    "YTT",  # flake8-2020
+    "ANN",
+    "C",
+    "I",
+    "RUF100",
+    "N",
+    "UP",
+]
+# extend-ignore = ["B018", "B019"]
+src = ["src"]
+extend-exclude = ["tests/fixtures"]
+target-version = "py39"
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+
+[tool.coverage.paths]
+source = [
+    "src",
+]
+
+[tool.coverage.run]
+branch = true
+source = [
+    "src",
+]
+
+[tool.coverage.report]
+skip_covered = true
+show_missing = true
+skip_empty = true
+exclude_also = [
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@(abc.)?abstractmethod",
+    "@typing.runtime_checkable",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "--doctest-modules",
+    "--cov",
+    "--cov-report=xml",
+    "--cov-config=pyproject.toml",
+    "--doctest-glob=*README.md",
+    "-x",
+    "-n=auto",
+]
+doctest_optionflags = [
+    "NORMALIZE_WHITESPACE",
+    "IGNORE_EXCEPTION_DETAIL",
+    "ELLIPSIS",
+]
+testpaths = [
+    "src",
+    "tests",
+]
+
+[tool.mypy]
+check_untyped_defs = false
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_decorators = false
+disallow_any_unimported = false
+warn_return_any = false
+warn_unused_ignores = true
+no_implicit_optional = true
+show_error_codes = true
+ignore_missing_imports = true
+implicit_reexport = false
+
+[tool.isort]
+profile = "black"
+atomic = true
+skip_glob = ["*/setup.py"]
+filter_files = true
+

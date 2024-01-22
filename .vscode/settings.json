@@ -13,5 +13,11 @@
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": false,
     "python.analysis.inlayHints.functionReturnTypes": true,
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "python.formatting.provider": "black",
+    "ruff.codeAction.fixViolation": {
+        "enable": true
+      }
 }
