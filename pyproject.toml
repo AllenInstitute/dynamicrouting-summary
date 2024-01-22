@@ -15,10 +15,20 @@ requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
 
+[tool.pdm.build]
+package-dir = "src"
 
 [tool.pdm]
-package-type = "application"
+package-type = "library"
 
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "ruff>=0.0.282",
+    "mypy>=1.4.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+]
 
 [tool.black]
 # line-length = 100
