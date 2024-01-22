@@ -1,0 +1,20 @@
+[project]
+name = "dynamicrouting-summary"
+version = "0.1.0"
+description = "Dynamic Routing project summary plots & tables, started for onsite retreat Jan 2024."
+authors = [
+    {name = "Ben Hardcastle", email = "ben.hardcastle@alleninstitute.org"},
+    {name = "Arjun Sridhar", email = "arjun.sridhar@alleninstitute.org"},
+    {name = "Hannah Cabasco", email = "hannah.cabasco@alleninstitute.org"},
+]
+dependencies = [
+    "npc-lims>=0.1.107",
+    "npc-sessions>=0.0.176",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+package-type = "application"

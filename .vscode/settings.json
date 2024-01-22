@@ -1,0 +1,17 @@
+{
+    "workbench.colorCustomizations": {
+        "commandCenter.border": "#15202b99",
+        "panel.border": "#22f4dc",
+        "sash.hoverBorder": "#22f4dc",
+        "titleBar.activeBackground": "#0bd8c1",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#0bd8c199",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#0bd8c1",
+    "python.linting.mypyEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.typeCheckingMode": "off"
+}
