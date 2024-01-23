@@ -33,7 +33,7 @@ def get_ephys_session_ids() -> set[str]:
 @functools.cache
 def get_templeton_session_ids() -> set[str]:
     """Get a list of session_ids for ephys sessions."""
-    return {info.id for info in npc_lims.get_session_info(is_ephys=True)}
+    return {info.id for info in npc_lims.get_session_info(is_templeton=True)}
 
 @functools.cache
 def get_bools(session_id: str) -> dict[str, bool]:
