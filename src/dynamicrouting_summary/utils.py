@@ -40,13 +40,11 @@ def get_bools(session_id: str) -> dict[str, bool]:
     """Get a dict of bools for is_ephys, is_templeton, is_training,
     is_dynamic_routing, etc. for adding as dataframe columns."""
     return {
-        "is_ephys": (is_ephys := session_id in get_ephys_session_ids()),
-        "is_templeton": (is_templeton := session_id in get_templeton_session_ids()),
+        "is_ephys": (is_ephys := session_id in tuple(get_ephys_session_ids())),
+        "is_templeton": (is_templeton := session_id in tuple(get_templeton_session_ids())),
         "is_training": not is_ephys,
         "is_dynamic_routing": not is_templeton,
     }
-
-
 
 
 if __name__ == '__main__':
@@ -55,4 +53,4 @@ if __name__ == '__main__':
     doctest.testmod(
         optionflags=(doctest.IGNORE_EXCEPTION_DETAIL | doctest.NORMALIZE_WHITESPACE)
     )
-
+    
