@@ -10,6 +10,7 @@ authors = [
 dependencies = [
     "npc-lims>=0.1.109",
     "npc-sessions>=0.0.176",
+    "seaborn>=0.13.1",
 ]
 requires-python = ">=3.9"
 readme = "README.md"
