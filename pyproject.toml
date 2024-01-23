@@ -1,5 +1,5 @@
 [project]
-name = "dynamicrouting-summary"
+name = "dynamicrouting_summary"
 version = "0.1.0"
 description = "Dynamic Routing project summary plots & tables, started for onsite retreat Jan 2024."
 authors = [
@@ -15,11 +15,17 @@ requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
 
-[tool.pdm.build]
-package-dir = "src"
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]
 
-[tool.pdm]
-package-type = "library"
+[build-system]
+requires = [
+    "setuptools>=61",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
 
 [tool.pdm.dev-dependencies]
 dev = [
