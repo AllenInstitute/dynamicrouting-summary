@@ -39,7 +39,7 @@ import pandas as pd
 
 import dynamicrouting_summary as dr
 
-dfs: [str, pd.DataFrame] = dr.get_dfs()
+dfs: dict[str, pd.DataFrame] = dr.get_dfs()
 ```
 
 ### Get units
