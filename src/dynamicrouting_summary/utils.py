@@ -15,8 +15,15 @@ def get_session_bools_df(version: str | None = None) -> pd.DataFrame:
     """
     session_df = pd.read_parquet(npc_lims.get_cache_path('session', version=version))
     session_df = add_session_id_column(session_df)
-    bools_df = pd.DataFrame([get_bools(s) for s in session_df['session_id']])
-    session_bools_df = pd.concat([session_df['session_id'].reset_index(drop=True), bools_df], axis=1)
+    bools_df = pd.DataFrame(
+        dict(
+            is_ephys = session_df.keywords.map({'ephys'}.issubset),
+            is_templeton = (is_templeton := session_df.keywords.map({'Templeton'}.issubset)),
+            is_training = session_df.keywords.map({'training'}.issubset),
+            is_dynamic_routing = ~is_templeton,
+        )
+    )
+    session_bools_df = pd.concat([session_df['session_id'].reset_index(drop=True), bools_df.reset_index(drop=True)], axis=1)
     return session_bools_df
 
 def add_session_id_column(df: pd.DataFrame) -> pd.DataFrame:
