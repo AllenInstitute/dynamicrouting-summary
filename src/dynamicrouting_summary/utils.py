@@ -23,7 +23,10 @@ def add_bool_columns(df: pd.DataFrame, version: str | None = None) -> pd.DataFra
       subject_id        date  session_idx  is_ephys  is_templeton  is_training  is_dynamic_routing
     0     660023  2023-08-09            0      True         False        False                True
     """
-    return df.merge(get_session_bools_df(version=version), on=['subject_id', 'date', 'session_idx'], how='outer')
+    # probably cleaner way to do this
+    merged_df = df.merge(get_session_bools_df(version=version), on=['subject_id', 'date', 'session_idx'], how='outer', suffixes=('', '_delim'))
+    merged_df_with_duplicate_columns_removed = merged_df[[c for c in df.columns if not c.endswith('_delim')]]
+    return merged_df_with_duplicate_columns_removed
 
 @functools.cache
 def get_ephys_session_ids() -> set[str]:
