@@ -1,4 +1,7 @@
+import collections.abc
+import contextlib
 import functools
+from typing import Iterator, TypeVar
 
 import npc_lims
 import pandas as pd
@@ -56,6 +59,49 @@ def add_bool_columns(df: pd.DataFrame, version: str | None = None) -> pd.DataFra
     """
     session_bools_df = get_session_bools_df(version=version)
     return add_session_id_column(df).merge(session_bools_df, on=['session_id'])  
+
+K = TypeVar("K")
+V = TypeVar("V")
+
+
+class LazyDict(collections.abc.Mapping[K, V]):
+    """Dict for postponed evaluation of functions and caching of results.
+
+    Assign values as a tuple of (callable, args, kwargs). The callable will be
+    evaluated when the key is first accessed. The result will be cached and
+    returned directly on subsequent access.
+
+    Effectively immutable after initialization.
+
+    Initialize with a dict:
+    >>> d = LazyDict({'a': (lambda x: x + 1, (1,), {})})
+    >>> d['a']
+    2
+
+    or with keyword arguments:
+    >>> d = LazyDict(b=(min, (1, 2), {}))
+    >>> d['b']
+    1
+    """
+
+    def __init__(self, *args, **kwargs) -> None:
+        self._raw_dict = dict(*args, **kwargs)
+
+    def __getitem__(self, key) -> V:
+        with contextlib.suppress(TypeError):
+            func, args, *kwargs = self._raw_dict.__getitem__(key)
+            self._raw_dict.__setitem__(key, func(*args, **kwargs[0]))
+        return self._raw_dict.__getitem__(key)
+
+    def __iter__(self) -> Iterator[K]:
+        return iter(self._raw_dict)
+
+    def __len__(self) -> int:
+        return len(self._raw_dict)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(keys={list(self._raw_dict.keys())})"
+
 
 if __name__ == '__main__':
     import doctest

@@ -6,7 +6,6 @@ import npc_lims
 import pandas as pd
 import dynamicrouting_summary.utils as utils
 
-from npc_sessions import LazyDict
 
 def get_dfs(version: str | None = None, with_bool_columns: bool = True) -> typing.Mapping[str | npc_lims.NWBComponentStr, pd.DataFrame]:
     """Get a dictionary of dataframes for each table-like component in an NWB file (except units)."""
@@ -16,7 +15,7 @@ def get_dfs(version: str | None = None, with_bool_columns: bool = True) -> typin
         if with_bool_columns:
             df = utils.add_bool_columns(df)
         return df
-    return LazyDict({
+    return utils.LazyDict({
         component: (_helper, (component, version, with_bool_columns), {})
         for component in components
     })
