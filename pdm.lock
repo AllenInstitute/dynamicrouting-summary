@@ -1632,7 +1632,7 @@ files = [
 
 [[package]]
 name = "npc-lims"
-version = "0.1.109"
+version = "0.1.110"
 requires_python = ">=3.9"
 summary = "Tools to fetch and update paths, metadata and state for Mindscope Neuropixels sessions, in the cloud."
 groups = ["default"]
@@ -1652,8 +1652,8 @@ dependencies = [
     "universal-pathlib>=0.1.1",
 ]
 files = [
-    {file = "npc_lims-0.1.109-py3-none-any.whl", hash = "sha256:e945815e1a6884ae42eaa836e49664d37a772d0d364e4d7e8c41486927357834"},
-    {file = "npc_lims-0.1.109.tar.gz", hash = "sha256:656dd6e5d79ff5de8e4989f38e5caa92dc7b03f7c5ae0ca2b1448d211f692c3d"},
+    {file = "npc_lims-0.1.110-py3-none-any.whl", hash = "sha256:358914ad2eb3d017c0819555bdd9571daea21fd3759175106c8bc9e4d25fdcbd"},
+    {file = "npc_lims-0.1.110.tar.gz", hash = "sha256:c2a394660eff1d190a1f6558ab01f43b854bd88b1d01688682457a63e2f684e8"},
 ]
 
 [[package]]
