@@ -50,19 +50,20 @@ def add_bool_columns(df: pd.DataFrame, version: str | None = None) -> pd.DataFra
     return add_session_id_column(df).merge(session_bools_df, on=['session_id'])  
 
 @functools.cache
-def get_ephys_session_ids() -> tuple[str, ...]:
+def get_ephys_session_ids() -> set[str]:
     """Get a list of session_ids for ephys sessions."""
-    return tuple(info.id for info in npc_lims.get_session_info(is_ephys=True))
+    return set(info.id for info in npc_lims.get_session_info(is_ephys=True))
 
 @functools.cache
-def get_templeton_session_ids() -> tuple[str, ...]:
+def get_templeton_session_ids() -> set[str]:
     """Get a list of session_ids for ephys sessions."""
-    return tuple(info.id for info in npc_lims.get_session_info(is_templeton=True))
+    return set(info.id for info in npc_lims.get_session_info(is_templeton=True))
 
 @functools.cache
 def get_bools(session_id: str) -> dict[str, bool]:
     """Get a dict of bools for is_ephys, is_templeton, is_training,
     is_dynamic_routing, etc. for adding as dataframe columns."""
+    assert len(session_id.split('_')) == 3, f"session_id {session_id} is not in the form of subject_id_date_session_idx"
     return {
         "is_ephys": (is_ephys := session_id in get_ephys_session_ids()),
         "is_templeton": (is_templeton := session_id in get_templeton_session_ids()),
