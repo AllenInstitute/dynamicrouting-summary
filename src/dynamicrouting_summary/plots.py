@@ -2,7 +2,7 @@
 import dynamicrouting_summary as dr
 import numpy as np
 import pandas as pd
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import seaborn as sns
 
 def plot_DRephys_behavior():
@@ -43,6 +43,6 @@ def plot_DRephys_behavior():
     print("n =", sum(beh_summary.passed ==1), "passing sessions")
 
 def plot_electrode_yield(structure):
-    df = dr.getdfs()['electrodes']
+    df = dr.get_dfs()['electrodes']
     structure_df = df[df['structure'] == structure]
     sns.countplot(data=structure_df, x='session_id', hue='session_id', legend='full')
