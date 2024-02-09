@@ -5,7 +5,26 @@ from typing import Iterator, TypeVar
 
 import npc_lims
 import pandas as pd
+import random
 
+def generate_subject_random_colors(df: pd.DataFrame) -> dict[str, tuple[int, int, int]]:
+    colors = set()
+    subject_colors = {}
+    subjects = df['subject_id'].unique()
+    for subject in subjects:
+        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        if color not in colors:
+            colors.add(color)
+            subject_colors[str(subject)] = color
+        else:
+            while True:
+                color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+                if color not in colors:
+                    colors.add(color)
+                    subject_colors[str(subject)] = color
+                    break
+    
+    return subject_colors
 
 @functools.cache
 def get_session_bools_df(version: str | None = None) -> pd.DataFrame:
