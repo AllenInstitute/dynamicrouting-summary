@@ -5,7 +5,11 @@ from typing import Iterator, TypeVar
 
 import npc_lims
 import pandas as pd
+import pyarrow.parquet as pq
+import s3fs
 import random
+
+S3_FILESYSTEM = s3fs.S3FileSystem()
 
 def generate_subject_random_colors(df: pd.DataFrame) -> dict[str, tuple[int, int, int]]:
     colors = set()
@@ -35,7 +39,8 @@ def get_session_bools_df(version: str | None = None) -> pd.DataFrame:
            'is_dynamic_routing', 'is_opto'],
           dtype='object')
     """
-    session_df = pd.read_parquet(npc_lims.get_cache_path('session', version=version))
+    session_parquet_dir = npc_lims.get_all_cache_paths(nwb_component='session', version=version)[0].parent.as_posix()[5:]
+    session_df = pq.ParquetDataset(session_parquet_dir, filesystem=S3_FILESYSTEM).read_pandas().to_pandas()
     session_df = add_session_id_column(session_df)
     bools_df = pd.DataFrame(
         dict(

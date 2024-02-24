@@ -8,7 +8,7 @@ authors = [
     {name = "Hannah Cabasco", email = "hannah.cabasco@alleninstitute.org"},
 ]
 dependencies = [
-    "npc-lims>=0.1.109",
+    "npc-lims>=0.1.120",
     "npc-sessions>=0.0.176",
     "seaborn>=0.13.1",
     "npc-session>=0.1.33",
