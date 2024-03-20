@@ -5,11 +5,11 @@ from typing import Iterator, TypeVar
 
 import npc_lims
 import pandas as pd
-import pyarrow.parquet as pq
+import npc_session
 import s3fs
 import random
 
-S3_FILESYSTEM = s3fs.S3FileSystem()
+BEHAVIOR_CRITERIA_THRESHOLD = 1.5
 
 def generate_subject_random_colors(df: pd.DataFrame) -> dict[str, tuple[int, int, int]]:
     colors = set()
@@ -29,6 +29,20 @@ def generate_subject_random_colors(df: pd.DataFrame) -> dict[str, tuple[int, int
                     break
     
     return subject_colors
+
+def is_subject_passing_behavior(subject: str | int | npc_session.SubjectRecord, performace_df: pd.DataFrame) -> bool:
+    subject = npc_session.SubjectRecord(subject)
+    performace_df_subject = performace_df[performace_df['subject_id'] == subject]
+    number_of_blocks_passed = 0
+
+    for block in performace_df_subject['block_index'].unique():
+        intra_dprime = performace_df_subject[performace_df_subject['block_index'] == block]['same_modal_dprime'].sum()
+        inter_dprime = performace_df_subject[performace_df_subject['block_index'] == block]['cross_modal_dprime'].sum()
+
+        if intra_dprime > BEHAVIOR_CRITERIA_THRESHOLD and inter_dprime > BEHAVIOR_CRITERIA_THRESHOLD:
+            number_of_blocks_passed += 1
+    
+    return number_of_blocks_passed > 3
 
 @functools.cache
 def get_session_bools_df(version: str | None = None) -> pd.DataFrame:
