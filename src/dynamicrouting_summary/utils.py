@@ -14,7 +14,11 @@ BEHAVIOR_CRITERIA_THRESHOLD = 1.5
 def generate_subject_random_colors(df: pd.DataFrame) -> dict[str, tuple[int, int, int]]:
     colors = set()
     subject_colors = {}
-    subjects = df['subject_id_x'].unique()
+    if 'subject_id_x' in df.columns:
+         subjects = df['subject_id_x'].unique()
+    else:
+        subjects = df['MID'].unique()
+
     for subject in subjects:
         color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         if color not in colors:
