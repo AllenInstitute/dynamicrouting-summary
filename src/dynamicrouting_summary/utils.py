@@ -49,7 +49,7 @@ def is_subject_passing_behavior(subject: str | int | npc_session.SubjectRecord, 
     return number_of_blocks_passed > 3
 
 @functools.cache
-def get_session_bools_df(version: str | None = None) -> pd.DataFrame:
+def get_session_bools_df(version: str | None = None, session_ids:list[str] | None=None) -> pd.DataFrame:
     """Get a dataframe with session_id, is_ephys, is_templeton, is_training, is_dynamic_routing columns.
     
     >>> get_session_bools_df().columns
@@ -57,7 +57,7 @@ def get_session_bools_df(version: str | None = None) -> pd.DataFrame:
            'is_dynamic_routing', 'is_opto'],
           dtype='object')
     """
-    session_df = pd.read_parquet(npc_lims.get_cache_path('session', version=version))
+    session_df = pd.concat(pd.read_parquet(npc_lims.get_cache_path('session', version=version, session_id=session)) for session in session_ids)
     session_df = add_session_id_column(session_df)
     bools_df = pd.DataFrame(
         dict(
@@ -85,7 +85,7 @@ def add_session_id_column(df: pd.DataFrame) -> pd.DataFrame:
     df_copy['session_id'] = df.apply(lambda row: f"{row['subject_id']}_{row['date']}_{row['session_idx']}", axis=1)   
     return df_copy
 
-def add_bool_columns(df: pd.DataFrame, version: str | None = None) -> pd.DataFrame:
+def add_bool_columns(df: pd.DataFrame, version: str | None = None, session_ids:list[str] | None = None) -> pd.DataFrame:
     """
     Function to add bool columns: is_ephys, is_templeton, is_training as columns to row of dataframe
     Assumes each row has subject_id, date, and session idx columns
@@ -98,7 +98,7 @@ def add_bool_columns(df: pd.DataFrame, version: str | None = None) -> pd.DataFra
         subject_id        date  session_idx           session_id  is_ephys  is_templeton  is_training  is_dynamic_routing  is_opto
     0       660023  2023-08-09            0  660023_2023-08-09_0      True         False        False                True    False
     """
-    session_bools_df = get_session_bools_df(version=version)
+    session_bools_df = get_session_bools_df(version=version, session_ids=session_ids)
     return add_session_id_column(df).merge(session_bools_df, on=['session_id'])  
 
 K = TypeVar("K")
